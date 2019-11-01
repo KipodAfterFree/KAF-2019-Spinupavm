@@ -5,7 +5,7 @@ import org.quteshell.Elevation;
 import org.quteshell.Quteshell;
 
 @Elevation(1)
-public class push implements Command {
+public class prt implements Command {
     @Override
     public void execute(Quteshell shell, String arguments) {
 

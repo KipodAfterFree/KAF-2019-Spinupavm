@@ -47,7 +47,7 @@ public class ProgramManager {
 
         private class Runtime {
             private Stack<Short> SA = new Stack<>(), SB = new Stack<>();
-            private Register<Short> RA = new Register<>((short) 0), RB = new Register<>((short) 0), RC = new Register<>((short) 0);
+            private Register<Short> RA = new Register<>((short) 0), RB = new Register<>((short) 0), RC = new Register<>((short) 1);
 
             private ArrayList<String> lines = new ArrayList<>();
 
@@ -64,13 +64,14 @@ public class ProgramManager {
             private void evaluate(String line, Quteshell quteshell) {
                 // Print input
                 quteshell.write("> ", Quteshell.Color.LightBlue);
-                quteshell.writeln(line);
+                quteshell.write(line);
                 // Evaluate
                 boolean result = true;
 
                 // Print output
                 quteshell.write("< ", Quteshell.Color.LightBlue);
-                quteshell.writeln(result ? "V" : "X", result ? Quteshell.Color.LightGreen : Quteshell.Color.LightRed);
+                quteshell.write(result ? "OK" : "NK", result ? Quteshell.Color.LightGreen : Quteshell.Color.LightRed);
+                quteshell.writeln();
             }
 
             private class Register<T> {
