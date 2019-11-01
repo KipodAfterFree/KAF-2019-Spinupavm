@@ -100,7 +100,8 @@ public class ProgramManager {
                         case "prt": {
                             if (split.length < 2) throw new Exception("Missing argument");
                             Register from = findRegister(split[1]);
-                            quteshell.write(" > " + from.get());
+                            quteshell.write(" > ", Quteshell.Color.LightBlue);
+                            quteshell.write(String.valueOf(from.get()));
                             break;
                         }
                         case "psh": {
