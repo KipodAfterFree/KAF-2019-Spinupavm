@@ -9,7 +9,8 @@ import spinupavm.ProgramManager;
 public class move implements Command {
     @Override
     public void execute(Quteshell shell, String arguments) {
-        ProgramManager.Program program = ProgramManager.get(shell.getIdentifier());
-        program.add("move "+arguments);
+        ProgramManager.Program program = ProgramManager.get(shell);
+        if (program != null)
+            program.add("move "+arguments);
     }
 }

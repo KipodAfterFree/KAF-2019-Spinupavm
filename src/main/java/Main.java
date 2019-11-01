@@ -1,8 +1,8 @@
 import org.quteshell.Command;
 import org.quteshell.Quteshell;
 import org.quteshell.commands.Help;
-import spinupavm.commands.execute;
-import spinupavm.commands.move;
+import spinupavm.ProgramManager;
+import spinupavm.commands.*;
 
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -34,13 +34,11 @@ public class Main {
 
         Quteshell.Configuration.setIDLength(5);
 
-        Quteshell.Configuration.setOnConnect(new Quteshell.Configuration.OnConnect() {
-            @Override
-            public void onConnect(Quteshell shell) {
-                shell.writeln("------------------------------------------", Quteshell.Color.LightRed);
-                shell.writeln("---- Hello there, "+shell.getIdentifier()+". Starting VM. ----", Quteshell.Color.LightOrange);
-                shell.writeln("------------------------------------------", Quteshell.Color.LightRed);
-            }
+        Quteshell.Configuration.setOnConnect(shell -> {
+            shell.writeln("------------------------------------------", Quteshell.Color.LightRed);
+            shell.writeln("---- Hello there, " + shell.getIdentifier() + ". Starting VM. ----", Quteshell.Color.LightOrange);
+            shell.writeln("------------------------------------------", Quteshell.Color.LightRed);
+            ProgramManager.start(shell);
         });
 
         try {
