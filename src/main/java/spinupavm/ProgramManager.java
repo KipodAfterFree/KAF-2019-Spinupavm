@@ -49,7 +49,7 @@ public class ProgramManager {
         }
 
         private class Runtime {
-            private Stack SA = new Stack(), SB = new Stack();
+            private Stack SA = new Stack(20), SB = new Stack(10);
             private Register RA = new Register((short) 0), RB = new Register((short) 0), RC = new Register((short) 1);
 
             private ArrayList<String> lines = new ArrayList<>();
@@ -174,13 +174,17 @@ public class ProgramManager {
 
             private class Stack {
 
-                private static final int MAX_CAPACITY = 10;
+                private int capacity = 10;
+
                 private ArrayList<Short> array = new ArrayList<>();
 
+                private Stack(int capacity) {
+                    this.capacity = capacity;
+                }
 
                 private void push(short value) throws ValueStackFullException {
                     array.add(value);
-                    if (array.size() > MAX_CAPACITY) {
+                    if (array.size() > capacity) {
                         throw new ValueStackFullException(array.remove(array.size() - 1));
                     }
                 }
