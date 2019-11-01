@@ -13,6 +13,6 @@ public class mov implements Command {
     public void execute(Quteshell shell, String arguments) {
         ProgramManager.Program program = ProgramManager.get(shell);
         if (program != null)
-            program.add("mov "+arguments);
+            program.add("mov " + arguments);
     }
 }

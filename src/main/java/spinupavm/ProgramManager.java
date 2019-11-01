@@ -92,18 +92,31 @@ public class ProgramManager {
                             break;
                         }
                         case "pop": {
+                            if (split.length < 2) throw new Exception("Missing argument");
                             Stack from = findStack(split[1]);
                             RC.set(from.pop());
+                            break;
                         }
-                        case "prt":{
-
+                        case "prt": {
+                            if (split.length < 2) throw new Exception("Missing argument");
+                            Register from = findRegister(split[1]);
+                            quteshell.write(" > " + from.get());
+                            break;
+                        }
+                        case "psh": {
+                            if (split.length < 2) throw new Exception("Missing argument");
+                            Stack to = findStack(split[1]);
+                            to.push(RC.get());
+                            break;
+                        }
+                        case "sub": {
+                            RC.set((short) (RA.get() - RB.get()));
+                            break;
                         }
                     }
-                } catch (StackNotFoundException | RegisterNotFoundException e) {
+                } catch (Stack.ValueStackFullException e) {
                     error = e.getMessage();
-                } catch (Stack.ValueStackFloodException e) {
-                    error = e.getMessage();
-                    quteshell.setElevation(e.getValue());
+                    quteshell.setElevation(e.value);
                 } catch (Exception e) {
                     error = e.getMessage();
                 }
@@ -128,13 +141,13 @@ public class ProgramManager {
 
             private class RegisterNotFoundException extends Exception {
                 private RegisterNotFoundException(String name) {
-                    super("A register not found exception has occurred - the register \'" + name.toUpperCase() + "\' was not found.");
+                    super("Register not found - the register \'" + name.toUpperCase() + "\' was not found.");
                 }
             }
 
             private class StackNotFoundException extends Exception {
                 private StackNotFoundException(String name) {
-                    super("A stack not found exception has occurred - the stack \'" + name.toUpperCase() + "\' was not found.");
+                    super("Stack not found - the stack \'" + name.toUpperCase() + "\' was not found.");
                 }
             }
 
@@ -156,43 +169,36 @@ public class ProgramManager {
 
             private class Stack {
 
-                private short amount = 0;
-                private short[] values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                private static final int MAX_CAPACITY = 10;
+                private ArrayList<Short> array = new ArrayList<>();
 
 
-                private void push(short value) throws ValueStackFloodException {
-                    short flood = values[0];
-                    for (int i = 0; i < amount - 1; i++) {
-                        values[i] = values[i + 1];
-                    }
-                    values[amount - 1] = value;
-                    if (amount > values.length) {
-                        throw new ValueStackFloodException(flood);
-                    } else {
-                        amount++;
+                private void push(short value) throws ValueStackFullException {
+                    array.add(value);
+                    if (array.size() > MAX_CAPACITY) {
+                        throw new ValueStackFullException(array.remove(array.size() - 1));
                     }
                 }
 
-                public short pop() {
-                    if (amount > 0) {
-                        amount--;
-                        return values[amount];
-                    } else {
-                        return 0;
-                    }
+                public short pop() throws ValueStackEmptyException {
+                    if (array.size() > 0)
+                        return array.remove(0);
+                    throw new ValueStackEmptyException();
                 }
 
-                private class ValueStackFloodException extends Exception {
+                private class ValueStackFullException extends Exception {
 
                     private int value = 0;
 
-                    private ValueStackFloodException(int value) {
-                        super("A value stack flood exception has occurred - the stack was flooded, pushed out value is " + value + ", sending to handler.");
+                    private ValueStackFullException(int value) {
+                        super("Value stack full - the stack overflowed, pushed out value is " + value + ", sending to handler.");
                         this.value = value;
                     }
+                }
 
-                    public int getValue() {
-                        return value;
+                private class ValueStackEmptyException extends Exception {
+                    private ValueStackEmptyException() {
+                        super("Value stack empty - the stack underflowed, pulled in value is 0, sending to handler.");
                     }
                 }
             }

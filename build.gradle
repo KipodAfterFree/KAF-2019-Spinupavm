@@ -30,5 +30,5 @@ task buildRunnable(type: Jar) {
 }
 
 dependencies {
-    compile "org.quteshell:quteshell:1.2.0"
+    compile "org.quteshell:quteshell:1.2.2"
 }

@@ -17,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) {
         Quteshell.Configuration.setLogState(true);
-        Quteshell.Configuration.setName("0w0");
+        Quteshell.Configuration.setName("?");
 
         for (Class<? extends Command> command : Quteshell.Configuration.Commands.getCommands())
             Quteshell.Configuration.Commands.remove(command);
@@ -25,6 +25,7 @@ public class Main {
         Quteshell.Configuration.Commands.add(Help.class);
         Quteshell.Configuration.Commands.add(Exit.class);
 
+        Quteshell.Configuration.Commands.add(flag.class);
         Quteshell.Configuration.Commands.add(execute.class);
         Quteshell.Configuration.Commands.add(add.class);
         Quteshell.Configuration.Commands.add(cmp.class);
