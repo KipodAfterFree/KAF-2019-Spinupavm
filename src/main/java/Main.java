@@ -26,6 +26,7 @@ public class Main {
         Quteshell.Configuration.Commands.add(Exit.class);
 
         Quteshell.Configuration.Commands.add(flag.class);
+        Quteshell.Configuration.Commands.add(reset.class);
         Quteshell.Configuration.Commands.add(execute.class);
         Quteshell.Configuration.Commands.add(add.class);
         Quteshell.Configuration.Commands.add(cmp.class);
