@@ -44,6 +44,10 @@ public class ProgramManager {
             new Runtime(lines).run(shell);
         }
 
+        public void reset() {
+            lines.clear();
+        }
+
         private class Runtime {
             private Stack SA = new Stack(), SB = new Stack();
             private Register RA = new Register((short) 0), RB = new Register((short) 0), RC = new Register((short) 1);
@@ -87,7 +91,7 @@ public class ProgramManager {
                         }
                         case "mov": {
                             if (split.length < 3) throw new Exception("Missing argument");
-                            Register from = findRegister(split[1]), to = findRegister(split[2]);
+                            Register to = findRegister(split[1]), from = findRegister(split[2]);
                             to.set(from.get());
                             break;
                         }
