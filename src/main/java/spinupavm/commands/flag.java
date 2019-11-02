@@ -6,7 +6,7 @@ import org.quteshell.Quteshell;
 import org.quteshell.commands.Help;
 
 @Elevation(Elevation.ALL)
-@Help.Description("correct-elevation=>green, else=>red")
+@Help.Description("(elevation<0)=>green")
 public class flag implements Command {
     @Override
     public void execute(Quteshell shell, String arguments) {
