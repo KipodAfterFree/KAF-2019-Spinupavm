@@ -200,14 +200,14 @@ public class ProgramManager {
                     private int value = 0;
 
                     private ValueStackFullException(int value) {
-                        super("Value stack full - the stack overflowed, pushed out value is " + value + ", sending to handler.");
+                        super("Value stack full - the stack overflowed, pushed out value is " + value + ", calling shell.");
                         this.value = value;
                     }
                 }
 
                 private class ValueStackEmptyException extends Exception {
                     private ValueStackEmptyException() {
-                        super("Value stack empty - the stack underflowed, pulled in value is 0, sending to handler.");
+                        super("Value stack empty - the stack underflowed, pulled in value is 0, calling shell.");
                     }
                 }
             }
