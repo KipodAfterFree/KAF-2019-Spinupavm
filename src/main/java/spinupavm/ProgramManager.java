@@ -81,11 +81,11 @@ public class ProgramManager {
                             RC.set(RA.get().add(RB.get()));
                             break;
                         }
-                        case "compare": {
+                        case "cmp": {
                             RC.set(BigInteger.valueOf(RA.get().compareTo(RB.get())));
                             break;
                         }
-                        case "move": {
+                        case "mov": {
                             if (split.length < 3) throw new Exception("Missing argument");
                             Register to = findRegister(split[1]), from = findRegister(split[2]);
                             to.set(from.get());
@@ -97,14 +97,14 @@ public class ProgramManager {
                             RC.set(from.pop());
                             break;
                         }
-                        case "print": {
+                        case "prt": {
                             if (split.length < 2) throw new Exception("Missing argument");
                             Register from = findRegister(split[1]);
                             quteshell.write(" > ", Quteshell.Color.LightBlue);
                             quteshell.write(String.valueOf(from.get()));
                             break;
                         }
-                        case "push": {
+                        case "psh": {
                             if (split.length < 2) throw new Exception("Missing argument");
                             Stack to = findStack(split[1]);
                             to.push(RC.get());
@@ -145,24 +145,24 @@ public class ProgramManager {
                 if (name.toLowerCase().equals("ra")) return RA;
                 if (name.toLowerCase().equals("rb")) return RB;
                 if (name.toLowerCase().equals("rc")) return RC;
-                throw new RegisterNotFoundException(name);
+                throw new RegisterNotFoundException();
             }
 
             private Stack findStack(String name) throws StackNotFoundException {
                 if (name.toLowerCase().equals("sa")) return SA;
                 if (name.toLowerCase().equals("sb")) return SB;
-                throw new StackNotFoundException(name);
+                throw new StackNotFoundException();
             }
 
             private class RegisterNotFoundException extends Exception {
-                private RegisterNotFoundException(String name) {
-                    super("The register \'" + name.toUpperCase() + "\' was not found.");
+                private RegisterNotFoundException() {
+                    super("The register was not found.");
                 }
             }
 
             private class StackNotFoundException extends Exception {
-                private StackNotFoundException(String name) {
-                    super("The stack \'" + name.toUpperCase() + "\' was not found.");
+                private StackNotFoundException() {
+                    super("The stack was not found.");
                 }
             }
 

@@ -7,12 +7,12 @@ import org.quteshell.commands.Help;
 import spinupavm.ProgramManager;
 
 @Elevation(1)
-@Help.Description("push - pushes the value at register RC to stack arg1")
-public class push implements Command {
+@Help.Description("cmp - moves the comparison result to RC (0->RA=RB, 1->RA>RB, -1->RA<RB)")
+public class cmp implements Command {
     @Override
     public void execute(Quteshell shell, String arguments) {
         ProgramManager.Program program = ProgramManager.get(shell);
         if (program != null)
-            program.add("push " + arguments);
+            program.add("cmp");
     }
 }

@@ -25,17 +25,15 @@ public class Main {
         Quteshell.Configuration.Commands.add(Help.class);
         Quteshell.Configuration.Commands.add(Exit.class);
 
-        Quteshell.Configuration.Commands.add(elevation.class);
-        Quteshell.Configuration.Commands.add(flag.class);
         Quteshell.Configuration.Commands.add(reset.class);
         Quteshell.Configuration.Commands.add(execute.class);
         Quteshell.Configuration.Commands.add(add.class);
-        Quteshell.Configuration.Commands.add(compare.class);
-        Quteshell.Configuration.Commands.add(move.class);
+        Quteshell.Configuration.Commands.add(cmp.class);
+        Quteshell.Configuration.Commands.add(mov.class);
         Quteshell.Configuration.Commands.add(pop.class);
-        Quteshell.Configuration.Commands.add(print.class);
-        Quteshell.Configuration.Commands.add(push.class);
-        Quteshell.Configuration.Commands.add(subtract.class);
+        Quteshell.Configuration.Commands.add(prt.class);
+        Quteshell.Configuration.Commands.add(psh.class);
+        Quteshell.Configuration.Commands.add(sub.class);
         Quteshell.Configuration.Commands.add(wtf.class);
 
         Quteshell.Configuration.setIDLength(5);
@@ -43,6 +41,7 @@ public class Main {
         Quteshell.Configuration.setOnConnect(shell -> {
             shell.writeln("------------------------------------------", Quteshell.Color.LightRed);
             shell.writeln("---- Hello there, " + shell.getIdentifier() + ". Starting VM. ----", Quteshell.Color.LightOrange);
+            shell.writeln("---- We record errors, to improve UX. ----", Quteshell.Color.LightOrange);
             shell.writeln("------------------------------------------", Quteshell.Color.LightRed);
             ProgramManager.start(shell);
         });

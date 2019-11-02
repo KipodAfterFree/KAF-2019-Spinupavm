@@ -7,12 +7,12 @@ import org.quteshell.commands.Help;
 import spinupavm.ProgramManager;
 
 @Elevation(1)
-@Help.Description("compare - moves the comparison result to RC (0->RA=RB, 1->RA>RB, -1->RA<RB)")
-public class compare implements Command {
+@Help.Description("psh - pushes the value at register RC to stack arg1")
+public class psh implements Command {
     @Override
     public void execute(Quteshell shell, String arguments) {
         ProgramManager.Program program = ProgramManager.get(shell);
         if (program != null)
-            program.add("compare");
+            program.add("psh " + arguments);
     }
 }
