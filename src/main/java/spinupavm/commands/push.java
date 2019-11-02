@@ -7,12 +7,12 @@ import org.quteshell.commands.Help;
 import spinupavm.ProgramManager;
 
 @Elevation(1)
-@Help.Description("print - prints the value at register arg1")
-public class prt implements Command {
+@Help.Description("push - pushes the value at register RC to stack arg1")
+public class push implements Command {
     @Override
     public void execute(Quteshell shell, String arguments) {
         ProgramManager.Program program = ProgramManager.get(shell);
         if (program != null)
-            program.add("prt " + arguments);
+            program.add("push " + arguments);
     }
 }

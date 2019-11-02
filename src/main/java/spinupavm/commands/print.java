@@ -7,12 +7,12 @@ import org.quteshell.commands.Help;
 import spinupavm.ProgramManager;
 
 @Elevation(1)
-@Help.Description("move - moves the value of register arg2 to register arg1")
-public class mov implements Command {
+@Help.Description("print - prints the value at register arg1")
+public class print implements Command {
     @Override
     public void execute(Quteshell shell, String arguments) {
         ProgramManager.Program program = ProgramManager.get(shell);
         if (program != null)
-            program.add("mov " + arguments);
+            program.add("print " + arguments);
     }
 }

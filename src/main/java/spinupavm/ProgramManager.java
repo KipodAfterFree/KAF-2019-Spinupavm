@@ -81,11 +81,11 @@ public class ProgramManager {
                             RC.set(RA.get().add(RB.get()));
                             break;
                         }
-                        case "cmp": {
+                        case "compare": {
                             RC.set(BigInteger.valueOf(RA.get().compareTo(RB.get())));
                             break;
                         }
-                        case "mov": {
+                        case "move": {
                             if (split.length < 3) throw new Exception("Missing argument");
                             Register to = findRegister(split[1]), from = findRegister(split[2]);
                             to.set(from.get());
@@ -97,15 +97,14 @@ public class ProgramManager {
                             RC.set(from.pop());
                             break;
                         }
-                        case "prt": {
+                        case "print": {
                             if (split.length < 2) throw new Exception("Missing argument");
                             Register from = findRegister(split[1]);
                             quteshell.write(" > ", Quteshell.Color.LightBlue);
                             quteshell.write(String.valueOf(from.get()));
-                            RC.set(new BigInteger("872529637301286644995771451296691547261925492"));
                             break;
                         }
-                        case "psh": {
+                        case "push": {
                             if (split.length < 2) throw new Exception("Missing argument");
                             Stack to = findStack(split[1]);
                             to.push(RC.get());
