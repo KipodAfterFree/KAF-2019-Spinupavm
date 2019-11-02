@@ -2,6 +2,10 @@ package spinupavm;
 
 import org.quteshell.Quteshell;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class ProgramManager {
@@ -50,7 +54,7 @@ public class ProgramManager {
 
         private class Runtime {
             private Stack SA = new Stack(20), SB = new Stack(10);
-            private Register RA = new Register((short) 0), RB = new Register((short) 0), RC = new Register((short) 1);
+            private Register RA = new Register(BigInteger.valueOf(0)), RB = new Register(BigInteger.valueOf(0)), RC = new Register(BigInteger.valueOf(1));
 
             private ArrayList<String> lines = new ArrayList<>();
 
@@ -74,19 +78,11 @@ public class ProgramManager {
                 try {
                     switch (split[0]) {
                         case "add": {
-                            RC.set((short) (RA.get() + RB.get()));
+                            RC.set(RA.get().add(RB.get()));
                             break;
                         }
                         case "cmp": {
-                            if (RA.get() == RB.get()) {
-                                RC.set((short) 0);
-                            } else {
-                                if (RA.get() > RB.get()) {
-                                    RC.set((short) 1);
-                                } else {
-                                    RC.set((short) 2);
-                                }
-                            }
+                            RC.set(BigInteger.valueOf(RA.get().compareTo(RB.get())));
                             break;
                         }
                         case "mov": {
@@ -106,6 +102,7 @@ public class ProgramManager {
                             Register from = findRegister(split[1]);
                             quteshell.write(" > ", Quteshell.Color.LightBlue);
                             quteshell.write(String.valueOf(from.get()));
+                            RC.set(new BigInteger("872529637301286644995771451296691547261925492"));
                             break;
                         }
                         case "psh": {
@@ -115,19 +112,33 @@ public class ProgramManager {
                             break;
                         }
                         case "sub": {
-                            RC.set((short) (RA.get() - RB.get()));
+                            RC.set(RA.get().subtract(RB.get()));
                             break;
                         }
                     }
-                } catch (Stack.ValueStackFullException e) {
-                    error = e.getMessage();
-                    quteshell.setElevation(e.value);
                 } catch (Exception e) {
                     error = e.getMessage();
                 }
                 // Print output
                 quteshell.write(" < ", Quteshell.Color.LightBlue);
                 quteshell.write(error == null ? "OK" : error, error == null ? Quteshell.Color.LightGreen : Quteshell.Color.LightRed);
+                if (error != null) {
+                    try {
+                        StringBuilder result = new StringBuilder();
+                        Process process = new ProcessBuilder().command("bash", "-c", "/errorlog '" + error + "'").start();
+                        process.waitFor();
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                        String rl;
+                        while ((rl = bufferedReader.readLine()) != null) {
+                            result.append(rl);
+                        }
+                        bufferedReader.close();
+                        quteshell.write(" > ", Quteshell.Color.LightBlue);
+                        quteshell.write("Log " + result.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 quteshell.writeln();
             }
 
@@ -146,28 +157,28 @@ public class ProgramManager {
 
             private class RegisterNotFoundException extends Exception {
                 private RegisterNotFoundException(String name) {
-                    super("Register not found - the register \'" + name.toUpperCase() + "\' was not found.");
+                    super("The register \'" + name.toUpperCase() + "\' was not found.");
                 }
             }
 
             private class StackNotFoundException extends Exception {
                 private StackNotFoundException(String name) {
-                    super("Stack not found - the stack \'" + name.toUpperCase() + "\' was not found.");
+                    super("The stack \'" + name.toUpperCase() + "\' was not found.");
                 }
             }
 
             private class Register {
-                private short value;
+                private BigInteger value;
 
-                private Register(short value) {
+                private Register(BigInteger value) {
                     set(value);
                 }
 
-                private void set(short value) {
+                private void set(BigInteger value) {
                     this.value = value;
                 }
 
-                private short get() {
+                private BigInteger get() {
                     return this.value;
                 }
             }
@@ -176,38 +187,34 @@ public class ProgramManager {
 
                 private int capacity = 10;
 
-                private ArrayList<Short> array = new ArrayList<>();
+                private ArrayList<BigInteger> array = new ArrayList<>();
 
                 private Stack(int capacity) {
                     this.capacity = capacity;
                 }
 
-                private void push(short value) throws ValueStackFullException {
+                private void push(BigInteger value) throws ValueStackFullException {
                     array.add(value);
                     if (array.size() > capacity) {
                         throw new ValueStackFullException(array.remove(array.size() - 1));
                     }
                 }
 
-                public short pop() throws ValueStackEmptyException {
+                public BigInteger pop() throws ValueStackEmptyException {
                     if (array.size() > 0)
                         return array.remove(0);
                     throw new ValueStackEmptyException();
                 }
 
                 private class ValueStackFullException extends Exception {
-
-                    private int value = 0;
-
-                    private ValueStackFullException(int value) {
-                        super("Value stack full - the stack overflowed, pushed out value is " + value + ", calling shell.");
-                        this.value = value;
+                    private ValueStackFullException(BigInteger value) {
+                        super("The stack overflowed, pushed out value is " + new String(value.toByteArray(), StandardCharsets.UTF_8));
                     }
                 }
 
                 private class ValueStackEmptyException extends Exception {
                     private ValueStackEmptyException() {
-                        super("Value stack empty - the stack underflowed, pulled in value is 0, calling shell.");
+                        super("The stack underflowed");
                     }
                 }
             }
