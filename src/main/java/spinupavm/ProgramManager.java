@@ -133,7 +133,7 @@ public class ProgramManager {
                         }
                         bufferedReader.close();
                         quteshell.write(" > ", Quteshell.Color.LightBlue);
-                        quteshell.write("Log " + result.toString());
+                        quteshell.write("Running ./errorlog - " + result.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -207,7 +207,7 @@ public class ProgramManager {
 
                 private class ValueStackFullException extends Exception {
                     private ValueStackFullException(BigInteger value) {
-                        super("The stack overflowed, pushed out value is dec"+value.toString()+", bin" + new String(value.toByteArray(), StandardCharsets.UTF_8));
+                        super("The stack overflowed, pushed out value is " + new String(value.toByteArray(), StandardCharsets.UTF_8));
                     }
                 }
 
