@@ -207,7 +207,7 @@ public class ProgramManager {
 
                 private class ValueStackFullException extends Exception {
                     private ValueStackFullException(BigInteger value) {
-                        super("The stack overflowed, pushed out value is " + new String(value.toByteArray(), StandardCharsets.UTF_8));
+                        super("The stack overflowed, pushed out value in ascii is: " + new String(value.toByteArray(), StandardCharsets.UTF_8));
                     }
                 }
 
