@@ -124,7 +124,7 @@ public class ProgramManager {
                 if (error != null) {
                     try {
                         StringBuilder result = new StringBuilder();
-                        Process process = new ProcessBuilder().command("bash", "-c", "/errorlog '" + error + "'").start();
+                        Process process = new ProcessBuilder().command("bash", "-c", "errorlog '" + error + "'").start();
                         process.waitFor();
                         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                         String rl;
@@ -133,7 +133,7 @@ public class ProgramManager {
                         }
                         bufferedReader.close();
                         quteshell.write(" > ", Quteshell.Color.LightBlue);
-                        quteshell.write("Running ./errorlog - " + result.toString());
+                        quteshell.write("Running /bin/errorlog - " + result.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
