@@ -7,4 +7,4 @@ RUN chmod 777 /bin/errorlog
 RUN chmod 555 /flag.txt
 RUN chmod 555 /app.jar
 RUN useradd nopermissions
-CMD su nopermissions -c "exec java -jar /app.jar"
+CMD exec su nopermissions -c "exec java -jar /app.jar"
